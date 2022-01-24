@@ -227,6 +227,9 @@ void bfv_performance_test(SEALContext context)
             /*
             [Rotate Rows One Step]
             We rotate matrix rows by one step left and measure the time.
+            a0 a1 a2    a1 a2 a0
+            a3 a4 a5 -> a4 a5 a3
+            a6 a7 a8    a7 a8 a6
             */
             time_start = chrono::high_resolution_clock::now();
             evaluator.rotate_rows_inplace(encrypted, 1, gal_keys);
