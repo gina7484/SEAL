@@ -476,14 +476,23 @@ void ckks_performance_test(SEALContext context)
         time_decrypt_sum += chrono::duration_cast<chrono::microseconds>(time_end - time_start);
 
         /*
-        [Add]
+        [Add]: evaluator.add_inplace x 3
+        - ckks_encoder.encode(i + 1, plain);
+            Encodes an integer number(i+1) into a plaintext polynomial(plain) 
+            without any scaling. The number repeats for N/2 times to fill all slots. 
+            (i.e. (i+1, i+1, ... ,i+1) -> plaintext polynomial (m_0, m_1, ... , m_N-1))
+            The encryption parameters used are the top level parameters for the given context.
+            (refer to native/src/seal/ckks.h line 377)
         */
         Ciphertext encrypted1(context);
         ckks_encoder.encode(i + 1, plain);
         encryptor.encrypt(plain, encrypted1);
+
         Ciphertext encrypted2(context);
         ckks_encoder.encode(i + 1, plain2);
         encryptor.encrypt(plain2, encrypted2);
+
+        // add_inplace 3 times
         time_start = chrono::high_resolution_clock::now();
         evaluator.add_inplace(encrypted1, encrypted1);
         evaluator.add_inplace(encrypted2, encrypted2);
@@ -492,7 +501,7 @@ void ckks_performance_test(SEALContext context)
         time_add_sum += chrono::duration_cast<chrono::microseconds>(time_end - time_start);
 
         /*
-        [Multiply]
+        [Multiply]: evaluator.multiply_inplace x 1
         */
         encrypted1.reserve(3);
         time_start = chrono::high_resolution_clock::now();
@@ -501,7 +510,8 @@ void ckks_performance_test(SEALContext context)
         time_multiply_sum += chrono::duration_cast<chrono::microseconds>(time_end - time_start);
 
         /*
-        [Multiply Plain]
+        [Multiply Plain]: evaluator.multiply_plain_inplace x 1
+        multiplies ciphertext with plaintext
         */
         time_start = chrono::high_resolution_clock::now();
         evaluator.multiply_plain_inplace(encrypted2, plain);
