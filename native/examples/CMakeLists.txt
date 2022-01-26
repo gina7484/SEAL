@@ -17,18 +17,37 @@ endif()
 
 if(SEAL_BUILD_EXAMPLES)
     add_executable(sealexamples)
+    target_include_directories(sealexamples PUBLIC /scale/cal/home-interns/gina7484/intel/oneapi/vtune/latest/sdk/include
+     /scale/cal/home-interns/gina7484/SEAL/native/src)
 
-    target_sources(sealexamples
-        PRIVATE
-            ${CMAKE_CURRENT_LIST_DIR}/examples.cpp
-            ${CMAKE_CURRENT_LIST_DIR}/1_bfv_basics.cpp
-            ${CMAKE_CURRENT_LIST_DIR}/2_encoders.cpp
-            ${CMAKE_CURRENT_LIST_DIR}/3_levels.cpp
-            ${CMAKE_CURRENT_LIST_DIR}/4_ckks_basics.cpp
-            ${CMAKE_CURRENT_LIST_DIR}/5_rotation.cpp
-            ${CMAKE_CURRENT_LIST_DIR}/6_serialization.cpp
-            ${CMAKE_CURRENT_LIST_DIR}/7_performance.cpp
-    )
+    target_link_directories(sealexamples PUBLIC /scale/cal/home-interns/gina7484/intel/oneapi/vtune/latest/sdk/lib32
+     /scale/cal/home-interns/gina7484/intel/oneapi/vtune/latest/sdk/lib64)
+
+    target_link_libraries(sealexamples PUBLIC /scale/cal/home-interns/gina7484/intel/oneapi/vtune/latest/sdk/lib64/libittnotify.a)
+    target_link_libraries(sealexamples PUBLIC ${CMAKE_DL_LIBS})
+
+    if(NOT DEFINED SEAL_BUILD_ORG_EXAMPLES)
+        set(SEAL_BUILD_ORG_EXAMPLES OFF)
+    endif()
+
+    if(SEAL_BUILD_ORG_EXAMPLES)
+        target_sources(sealexamples
+            PRIVATE
+                ${CMAKE_CURRENT_LIST_DIR}/examples.cpp
+                ${CMAKE_CURRENT_LIST_DIR}/1_bfv_basics.cpp
+                ${CMAKE_CURRENT_LIST_DIR}/2_encoders.cpp
+                ${CMAKE_CURRENT_LIST_DIR}/3_levels.cpp
+                ${CMAKE_CURRENT_LIST_DIR}/4_ckks_basics.cpp
+                ${CMAKE_CURRENT_LIST_DIR}/5_rotation.cpp
+                ${CMAKE_CURRENT_LIST_DIR}/6_serialization.cpp
+                ${CMAKE_CURRENT_LIST_DIR}/7_performance.cpp
+        )
+    else()
+        target_sources(sealexamples
+            PRIVATE
+                ${CMAKE_CURRENT_LIST_DIR}/profile/profile_mult.cpp
+        )
+    endif()
 
     if(TARGET SEAL::seal)
         target_link_libraries(sealexamples PRIVATE SEAL::seal)

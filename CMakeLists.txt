@@ -675,6 +675,11 @@ if(SEAL_BUILD_EXAMPLES)
     add_subdirectory(native/examples)
 endif()
 
+# [option] SEAL_BUILD_ORG_EXAMPLES
+set(SEAL_BUILD_ORG_EXAMPLES_OPTION_STR "Build the original C++ examples for Microsoft SEAL")
+option(SEAL_BUILD_ORG_EXAMPLES ${SEAL_BUILD_ORG_EXAMPLES_OPTION_STR} OFF)
+message(STATUS "SEAL_BUILD_ORG_EXAMPLES: ${SEAL_BUILD_ORG_EXAMPLES}")
+
 ##################
 # SEAL C++ tests #
 ##################
