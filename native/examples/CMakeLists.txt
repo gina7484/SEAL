@@ -17,13 +17,13 @@ endif()
 
 if(SEAL_BUILD_EXAMPLES)
     add_executable(sealexamples)
-    target_include_directories(sealexamples PUBLIC /scale/cal/home-interns/gina7484/intel/oneapi/vtune/latest/sdk/include
+    target_include_directories(sealexamples PUBLIC /opt/intel/oneapi/vtune/latest/sdk/include
      /scale/cal/home-interns/gina7484/SEAL/native/src)
 
-    target_link_directories(sealexamples PUBLIC /scale/cal/home-interns/gina7484/intel/oneapi/vtune/latest/sdk/lib32
+    target_link_directories(sealexamples PUBLIC /opt/intel/oneapi/vtune/latest/sdk/lib32
      /scale/cal/home-interns/gina7484/intel/oneapi/vtune/latest/sdk/lib64)
 
-    target_link_libraries(sealexamples PUBLIC /scale/cal/home-interns/gina7484/intel/oneapi/vtune/latest/sdk/lib64/libittnotify.a)
+    target_link_libraries(sealexamples PUBLIC /opt/intel/oneapi/vtune/latest/sdk/lib64/libittnotify.a)
     target_link_libraries(sealexamples PUBLIC ${CMAKE_DL_LIBS})
 
     if(NOT DEFINED SEAL_BUILD_ORG_EXAMPLES)
@@ -45,7 +45,7 @@ if(SEAL_BUILD_EXAMPLES)
     else()
         target_sources(sealexamples
             PRIVATE
-                ${CMAKE_CURRENT_LIST_DIR}/profile/profile_mult.cpp
+                ${CMAKE_CURRENT_LIST_DIR}/profile/mult_par.cpp
         )
     endif()
 
