@@ -26,6 +26,10 @@ if(SEAL_BUILD_EXAMPLES)
     target_link_libraries(sealexamples PUBLIC /opt/intel/oneapi/vtune/latest/sdk/lib64/libittnotify.a)
     target_link_libraries(sealexamples PUBLIC ${CMAKE_DL_LIBS})
 
+    # added for multi-threading
+    target_compile_options(sealexamples PUBLIC "-fopenmp")
+    target_link_options(sealexamples PUBLIC "-fopenmp")
+
     if(NOT DEFINED SEAL_BUILD_ORG_EXAMPLES)
         set(SEAL_BUILD_ORG_EXAMPLES OFF)
     endif()
